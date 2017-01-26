@@ -38,11 +38,11 @@ io.on('connection', function (socket) {
   });
 
 
-  setInterval(function () {
-    i += 1.0;
-    console.log("Sending a thing...");
-    socket.emit('currentAmount', 123.0 + i)
-  }, 3000)
+  // setInterval(function () {
+  //   i += 1.0;
+  //   console.log("Sending a thing...");
+  //   socket.emit('currentAmount', 123.0 + i)
+  // }, 3000)
 });
 
 
