@@ -10,6 +10,20 @@ server.listen((process.env.PORT || 5000));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
+function generateResponseObject() {
+  return {
+    "version": "1.0",
+    "response": {
+      "outputSpeech": {
+        "type": "PlainText",
+        "text": "Keep an ear out!"
+      },
+      "shouldEndSession": true
+    }
+  }
+
+}
+
 var alexaReceiver = function(req, res) {
   u.logItOut({
     "method": req.method,
@@ -21,11 +35,7 @@ var alexaReceiver = function(req, res) {
 
   var count = phoneSide.sendPlayMarcoToAll();
 
-  res.send({
-    sent: "playMarco",
-    to: "all",
-    count: count
-  });
+  res.send(generateResponseObject());
 };
 
 app.get('/', alexaReceiver);
