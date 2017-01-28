@@ -21,11 +21,13 @@ module.exports = function phoneSide(server) {
   }
 
   function sendPlayMarcoToAll() {
+      var count = Object.keys(io.sockets.connected).length || 0;
       u.logItOut({
         action: "triggering_playMarcoToAll"
       });
 
       io.sockets.emit('playMarco', Date.now() + 0.0);
+
 
       u.logItOut({
         action: "triggered_playMarcoToAll",
@@ -33,7 +35,8 @@ module.exports = function phoneSide(server) {
       });
 
       u.logItOut({"connected_sockets": Object.keys(io.sockets.connected)});
-      return Object.keys(io.sockets.connected).length;
+
+      return count;
   }
 
  return {
