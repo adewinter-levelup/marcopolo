@@ -1,8 +1,8 @@
 var app = require('express')();
 var server = require('http').Server(app);
-
+var u = require('./util.js');
 var bodyParser = require('body-parser');
-var phoneSide = require ('./phoneSide.js');
+var phoneSide = require ('./phoneSide.js')(server);
 
 server.listen((process.env.PORT || 5000));
 
@@ -10,15 +10,8 @@ server.listen((process.env.PORT || 5000));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
-var logItOut = function(msg) {
-  if (typeof(msg) === "string") {
-    msg = { message: msg };
-  }
-  console.log(JSON.stringify(msg));
-}
-
-var echoFunc = function(req, res) {
-  logItOut({
+var alexaReceiver = function(req, res) {
+  u.logItOut({
     "method": req.method,
     "body": req.body,
     "IP": req.ip,
@@ -26,16 +19,8 @@ var echoFunc = function(req, res) {
     "headers": req.headers
   });
 
-  logItOut({
-    action: "triggering_playMarcoToAll"
-  });
-
   var count = phoneSide.sendPlayMarcoToAll();
-  
-  logItOut({
-    action: "triggered_playMarcoToAll",
-    count: count
-  });
+
   res.send({
     sent: "playMarco",
     to: "all",
@@ -43,9 +28,9 @@ var echoFunc = function(req, res) {
   });
 };
 
-app.get('/', echoFunc);
-app.post('/', echoFunc);
+app.get('/', alexaReceiver);
+app.post('/', alexaReceiver);
 
 phoneSide.start();
 
-console.log('APP STARTED');
+u.logItOut('APP STARTED');
