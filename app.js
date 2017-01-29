@@ -16,7 +16,7 @@ function generateResponseObject() {
     "response": {
       "outputSpeech": {
         "type": "PlainText",
-        "text": "Keep an ear out!"
+        "text": ""
       },
       "shouldEndSession": true
     }
